@@ -42,7 +42,7 @@ class Controller {
             process.env.SECRETKEY
           );
           res.status(200).json({
-            accessToken: token,
+            access_token: token,
             email: user.email,
           });
         }
@@ -52,9 +52,38 @@ class Controller {
     }
   }
 
-  static async getMyorder(req, res, next) {
+  static async getMyOrder(req, res, next) {
     try {
-      console.log("masuk");
+      const order = await Order.findAll();
+
+      res.status(200).json(order);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async MakeMyOrder(req, res, next) {
+    try {
+      const { name, quantity, price } = req.body;
+
+      const id = req.user.id;
+
+      const product = await Product.create({
+        name,
+        quantity,
+        price,
+      });
+
+      if (!product) {
+        throw { msg: `Product can't be registered` };
+      } else {
+        const order = await Order.create({
+          UserId: id,
+          ProductId: product.id,
+        });
+
+        res.status(201).json({ product, order });
+      }
     } catch (error) {
       next(error);
     }
