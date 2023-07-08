@@ -11,8 +11,12 @@ class Controller {
         email: req.body.email,
         password: password,
       });
-      res.status(201).json({
-        id: user.id,
+      var token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.SECRETKEY
+      );
+      res.status(200).json({
+        access_token: token,
         email: user.email,
       });
     } catch (error) {
@@ -54,7 +58,17 @@ class Controller {
 
   static async getMyOrder(req, res, next) {
     try {
-      const order = await Order.findAll();
+      const order = await Order.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ["email"],
+          },
+          {
+            model: Product,
+          },
+        ],
+      });
 
       res.status(200).json(order);
     } catch (error) {
