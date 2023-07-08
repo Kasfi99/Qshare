@@ -1,0 +1,57 @@
+{
+    "Users": [
+        {
+            "email": "JohnDoe@emaple.com",
+            "password": "ThisIsJohnDoe12"
+        },
+        {
+            "email": "MaryDoe@example.com",
+            "password": "ThisIsMaryDoe12"
+        }
+    ],
+    "Products": [
+        {
+            "name": "Samsung Televisions QHD",
+            "quantity": 50,
+            "price": 5200000
+        },
+        {
+            "name": "Xiaomi Televisions 8K HD",
+            "quantity": 25,
+            "price": 7400000
+        },
+        {
+            "name": "SONY Smart TV OLED 4KHDR ",
+            "quantity": 35,
+            "price": 6750000
+        },
+        {
+            "name": "Iphone 14 Pro Max (512GB)",
+            "quantity": 50,
+            "price": 24900000
+        },
+        {
+            "name": "Xiaomi Redmi 13 PRO",
+            "quantity": 50,
+            "price": 21399000
+        }
+    ],
+    "Orders": [
+        {
+            "UserId": 1,
+            "ProductId": 1
+        },
+        {
+            "UserId": 1,
+            "ProductId": 5
+        },
+        {
+            "UserId": 2,
+            "ProductId": 4
+        },
+        {
+            "UserId": 2,
+            "ProductId": 2
+        }
+    ]
+}
