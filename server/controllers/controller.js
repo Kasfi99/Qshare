@@ -1,7 +1,7 @@
 const { User, Product, Order } = require("../models");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { hashedPassword } = require("../helpers/helper");
+const { hashedPassword } = require("../helpers/jwt");
 
 class Controller {
   static async SignUp(req, res, next) {
@@ -43,10 +43,18 @@ class Controller {
           );
           res.status(200).json({
             accessToken: token,
-            data: user,
+            email: user.email,
           });
         }
       }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getMyorder(req, res, next) {
+    try {
+      console.log("masuk");
     } catch (error) {
       next(error);
     }
