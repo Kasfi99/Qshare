@@ -11,8 +11,12 @@ class Controller {
         email: req.body.email,
         password: password,
       });
-      res.status(201).json({
-        id: user.id,
+      var token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.SECRETKEY
+      );
+      res.status(200).json({
+        access_token: token,
         email: user.email,
       });
     } catch (error) {
@@ -42,7 +46,7 @@ class Controller {
             process.env.SECRETKEY
           );
           res.status(200).json({
-            accessToken: token,
+            access_token: token,
             email: user.email,
           });
         }
@@ -52,9 +56,48 @@ class Controller {
     }
   }
 
-  static async getMyorder(req, res, next) {
+  static async getMyOrder(req, res, next) {
     try {
-      console.log("masuk");
+      const order = await Order.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ["email"],
+          },
+          {
+            model: Product,
+          },
+        ],
+      });
+
+      res.status(200).json(order);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async MakeMyOrder(req, res, next) {
+    try {
+      const { name, quantity, price } = req.body;
+
+      const id = req.user.id;
+
+      const product = await Product.create({
+        name,
+        quantity,
+        price,
+      });
+
+      if (!product) {
+        throw { msg: `Product can't be registered` };
+      } else {
+        const order = await Order.create({
+          UserId: id,
+          ProductId: product.id,
+        });
+
+        res.status(201).json({ product, order });
+      }
     } catch (error) {
       next(error);
     }
