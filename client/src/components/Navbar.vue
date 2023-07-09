@@ -13,6 +13,9 @@ export default {
     computed: {
         isLogged() {
             return useMainStore().isLogged;
+        },
+        updateModal() {
+            return useMainStore().showModal;
         }
     },
     methods: {
@@ -20,18 +23,20 @@ export default {
             return useMainStore().LogOut();
         },
         showModal() {
-            return useMainStore().showModal();
+            useMainStore().toggleModal();
+            console.log(this.updateModal, 'ini modal');
         }
     }
 }
 </script>
 
 <template>
-    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <nav class="bg-white border-gray-200 dark:bg-gray-900 sticky top-0 z-50">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <router-link to="/" href="https://flowbite.com/" class="flex items-center">
-                <div class="h-10 w-10 mr-3 flex" style="overflow: hidden;border-radius: 100%;">
-                    <img src="../assets/2.png" alt="Flowbite Logo" style=" transform: scale(1.5); object-fit: cover;" />
+                html
+                <div class="h-10 w-10 mr-3 flex overflow-hidden rounded-full">
+                    <img src="../assets/2.png" alt="Flowbite Logo" class="transform scale-150 object-cover" />
                 </div>
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Home Device</span>
             </router-link>

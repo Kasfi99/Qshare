@@ -26,7 +26,6 @@ export default {
             this.isRegister = false;
             this.dataInput.email = null;
             this.dataInput.password = null;
-            this.$router.push('/');
         }
     }
 }

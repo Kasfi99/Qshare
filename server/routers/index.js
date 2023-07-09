@@ -12,7 +12,7 @@ router.post("/user/sign-in", Controller.SignIn);
 //handle the order traffic
 router.use(authentication);
 router.get("/order/my-order", Controller.getMyOrder);
-router.post("/order/make-order", Controller.MakeMyOrder);
+router.post("/order/add-order", Controller.MakeMyOrder);
 
 //handling error
 router.use(errorHandler);

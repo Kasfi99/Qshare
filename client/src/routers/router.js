@@ -18,18 +18,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  //   if (localStorage.getItem("access_token") && to.name === "registerPage") {
-  //     return { name: "HomePage" };
-  //   }
-  //   if (localStorage.getItem("access_token") && to.name === "LoginPage") {
-  //     return { name: "HomePage" };
-  //   }
-  //   if (!localStorage.getItem("access_token") && to.name === "HomePage") {
-  //     return { name: "LoginPage" };
-  //   }
-  //   if (!localStorage.getItem("access_token") && to.name === "OrderPage") {
-  //     return { name: "LoginPage" };
-  //   }
+  if (localStorage.getItem("access_token") && to.name === "LoginPage") {
+    return { name: "HomePage" };
+  }
+  if (!localStorage.getItem("access_token") && to.name === "HomePage") {
+    return { name: "LoginPage" };
+  }
 });
 
 export default router;

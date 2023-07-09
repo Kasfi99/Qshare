@@ -21,7 +21,18 @@ export const useMainStore = defineStore("counter", {
         });
 
         this.isLogged = true;
-        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("email", data.email);
+        await localStorage.setItem("access_token", data.access_token);
+        this.fetchData();
+        router.push("/");
+
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login Succesfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -38,8 +49,18 @@ export const useMainStore = defineStore("counter", {
           data: userData,
         });
 
+        localStorage.setItem("email", data.email);
         this.isLogged = true;
-        localStorage.setItem("access_token", data.access_token);
+        await localStorage.setItem("access_token", data.access_token);
+        router.push("/");
+
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Register Succesfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -50,25 +71,26 @@ export const useMainStore = defineStore("counter", {
     },
     async LogOut() {
       try {
-        localStorage.removeItem("access_token");
+        await localStorage.removeItem("access_token");
         this.isLogged = false;
-        this.$router.push("/sign-in");
+        localStorage.removeItem("email");
+        router.push("/sign-in");
+
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Log Out Succesfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } catch (error) {
+        console.log(error);
         Swal.fire({
           icon: "error",
           title: "Log Out Problem",
           text: "Sorry, for the inconvenience",
         });
       }
-    },
-    async AddFavorite(id) {
-      const { data } = await axios({
-        method: "POST",
-        url: `${this.baseUrl}/favorites/${id}`,
-        headers: {
-          access_token: localStorage.access_token,
-        },
-      });
     },
     async toggleModal() {
       this.showModal = !this.showModal;
@@ -83,7 +105,44 @@ export const useMainStore = defineStore("counter", {
           },
         });
         this.order = data;
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Fetch Data is Failed",
+          text: "Sorry, for the inconvenience",
+        });
+      }
+    },
+    async submitOrder(dataInput) {
+      try {
+        console.log("masuk sinbi", dataInput);
+        const { data } = await axios({
+          method: "POST",
+          url: `${this.baseUrl}/order/add-order`,
+          headers: {
+            access_token: localStorage.access_token,
+          },
+          data: dataInput,
+        });
+
+        await this.fetchData();
+        router.push("/");
+
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Successfully Add Your Order",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Submit Order",
+          text: "Sorry, for the inconvenience",
+        });
+      }
     },
   },
 });
